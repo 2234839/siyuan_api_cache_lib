@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bersling/typescript-library-starter.git"
+    "url": "git+https://github.com/2234839/siyuan_api_cache_lib.git"
   },
   "keywords": [
     "demo",
@@ -24,12 +24,12 @@
     "library",
     "hello world"
   ],
-  "author": "Daniel Niederberger <bersling@gmail.com>",
+  "author": "<admin@shenzilong.cn>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bersling/typescript-library-starter/issues"
+    "url": "https://github.com/2234839/siyuan_api_cache_lib/issues"
   },
-  "homepage": "https://github.com/bersling/typescript-library-starter#readme",
+  "homepage": "https://github.com/2234839/siyuan_api_cache_lib#readme",
   "devDependencies": {},
   "dependencies": {
     "typescript": "^4.2.3"
