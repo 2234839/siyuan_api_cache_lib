@@ -11,7 +11,7 @@
   - setBlockAttrs : 对 /api/attr/setBlockAttrs 接口的包装
   - getBlockAttrs : 对 /api/attr/getBlockAttrs 接口的包装
 
-查询类的 api 默认会进行缓存，非查询类的 api 则不会，可以通过查看函数的 noCache 属性来分辨
+查询类的 api 默认会进行缓存，非查询类的 api 则不会，可以通过查看函数的 noCache 属性来分辨，这个属性也是可以 set 的
 (查询类的 api 也需要使用者自行斟酌避免过多的数据被缓存到挂件块的自定义属性）
 
 - util
