@@ -13,3 +13,6 @@ export function sqlQuery<T>(/** sql 查询语句 */ stmt: string): Promise<{
   });
   return fetch_proxy("/api/query/sql", { body: raw });
 }
+export namespace sqlQuery {
+  export let noCache = false;
+}

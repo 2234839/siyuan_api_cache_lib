@@ -4,8 +4,10 @@ import { sqlQuery } from "./sql";
 import type { attrRow } from "./type";
 
 // 维持 htmlDecode 的导入，用于 @link
-htmlDecode.toString()
-
+htmlDecode.toString();
+/**
+ * 此函数默认不被 cache
+ */
 export function setBlockAttrs(p: {
   /** 挂件块 ID */
   id: string;
@@ -20,7 +22,9 @@ export function setBlockAttrs(p: {
   const raw = JSON.stringify(p);
   return fetch_proxy("/api/attr/setBlockAttrs", { body: raw });
 }
-
+export namespace setBlockAttrs {
+  export let noCache = true;
+}
 /**
  * 查询块属性
  *
@@ -32,4 +36,7 @@ export async function getBlockAttrs(id: string): Promise<{
   data: attrRow[];
 }> {
   return await sqlQuery(`SELECT * FROM "attributes" WHERE block_id='${id}'`);
+}
+export namespace getBlockAttrs {
+  export let noCache = false;
 }

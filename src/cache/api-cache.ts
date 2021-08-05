@@ -1,5 +1,4 @@
 import { config } from "../config";
-import { util } from "../index";
 import { setBlockAttrs } from "../siyuan-api/attr";
 import { currentNodeId } from "../util/current-node-id";
 import { getCurrentEnv } from "../util/env";
@@ -7,12 +6,16 @@ import { getCurrentEnv } from "../util/env";
 /**
  * 接受一个函数，返回一个新函数，新函数的调用在非思源环境下会使用缓存的结果，不会实际运行传入的函数
  * 参数以及返回值需要可使用 JSON.stringify
- * @param f
- * @returns
  */
-function cache<F extends (...arg: unknown[]) => void>(f: F): F {
+function cache<F extends ((...arg: unknown[]) => void) & { noCache: boolean }>(
+  f: F
+): F {
   return (async (...arg: unknown[]) => {
-    if (config.apiCache && getCurrentEnv() === getCurrentEnv.env.siYuan) {
+    if (
+      config.apiCache &&
+      !f.noCache &&
+      getCurrentEnv() === getCurrentEnv.env.siYuan
+    ) {
       const r = await f(...arg);
       const id = currentNodeId();
       if (id) {

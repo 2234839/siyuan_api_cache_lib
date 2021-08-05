@@ -10,6 +10,10 @@
   - sqlQuery : 对 post /api/query/sql 接口的包装
   - setBlockAttrs : 对 /api/attr/setBlockAttrs 接口的包装
   - getBlockAttrs : 对 /api/attr/getBlockAttrs 接口的包装
+
+查询类的 api 默认会进行缓存，非查询类的 api 则不会，可以通过查看函数的 noCache 属性来分辨
+(查询类的 api 也需要使用者自行斟酌避免过多的数据被缓存到挂件块的自定义属性）
+
 - util
   - htmlDecode : 思源对于 setBlockAttrs 的属性会 encode ，所以提供此工具方法
   - currentNodeId : 获取当前挂件块的 id

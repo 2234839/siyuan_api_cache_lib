@@ -1,6 +1,6 @@
 {
   "name": "siyuan_api_cache_lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "为思源挂件块提供 api 访问的工具库，同时具有缓存 api 调用结果到块属性上以及在非思源笔记环境下使用缓存结果的功能",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
