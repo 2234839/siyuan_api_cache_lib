@@ -24,7 +24,7 @@
 所以我在开发的时候使用 nginx 进行转发来绕过这个问题
 (和跨域无关，我使用 chrome 关闭跨域的安全策略还是无法在非同源的情况下拿到 `frameElement`)
 
-配置 iframe 的资源链接为 `http://127.0.0.1/widget/run-code/` (run-code 是我在开发的插件 [github.com/run-code](https://github.com/2234839/run-code)，建议查看这个项目里面对本库的使用方式)
+配置 iframe 的资源链接为 `http://127.0.0.1/widgets/run-code/` (run-code 是我在开发的插件 [github.com/run-code](https://github.com/2234839/run-code)，建议查看这个项目里面对本库的使用方式)
 
 对于在思源中的开发调试建议采用 nginx 进行如下配置，然后使用思源的在浏览器中打开，在这里进行开发调试
 
@@ -39,8 +39,8 @@ server {
         proxy_set_header Host $host;
         index index.html index.htm;
     }
-    location /widget/run-code/ {
-        #// run-code 所启动的服务， run-code 还配置了 base 路径为 /widget/run-code/
+    location /widgets/run-code/ {
+        #// run-code 所启动的服务， run-code 还配置了 base 路径为 /widgets/run-code/
         proxy_pass http://127.0.0.1:3000;
         proxy_set_header Host $host;
         index index.html index.htm;
@@ -59,7 +59,7 @@ server {
         #// oceanPress 生成的静态站点目录
         alias 'D:/TEMP/思源test/';
     }
-    location /widget/run-code/ {
+    location /widgets/run-code/ {
         proxy_pass http://127.0.0.1:3000;
         proxy_set_header Host $host;
         index index.html index.htm;
