@@ -20,12 +20,20 @@ function cache<F extends ((...arg: unknown[]) => void) & { noCache: boolean }>(
       const id = currentNodeId();
       if (id) {
         const key = getCacheKey(f, arg);
-        setBlockAttrs({
-          id,
-          attrs: {
-            [key]: JSON.stringify(r),
-          },
-        });
+        const value = JSON.stringify(r);
+        if (value.length <= config.maxCacheValueLength) {
+          setBlockAttrs({
+            id,
+            attrs: {
+              [key]: value,
+            },
+          });
+        } else {
+          console.error(
+            "需要缓存的值超出了设定的 config.maxCacheValueLength",
+            value
+          );
+        }
       }
       return r;
     } else {

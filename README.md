@@ -10,6 +10,7 @@
   - sqlQuery : 对 post /api/query/sql 接口的包装
   - setBlockAttrs : 对 /api/attr/setBlockAttrs 接口的包装
   - getBlockAttrs : 对 /api/attr/getBlockAttrs 接口的包装
+  - getBlockAttr : 对 /api/attr/getBlockAttrs 接口的包装,查询单个属性
 
 查询类的 api 默认会进行缓存，非查询类的 api 则不会，可以通过查看函数的 noCache 属性来分辨，这个属性也是可以 set 的
 (查询类的 api 也需要使用者自行斟酌避免过多的数据被缓存到挂件块的自定义属性）
@@ -19,8 +20,9 @@
   - currentNodeId : 获取当前挂件块的 id
   - getCurrentEnv : 获取当前所处环境，例如 思源 与 OceanPress
 - config
-  - server : 会在 api 请求路径的前面加上这个字段的值,便于开发调试
-  - apiCache : 对 api 上方法的调用是否开启缓存，如果需要支持 OceanPress 请开启此选项
+  - server : `@defaultValue ""` 会在 api 请求路径的前面加上这个字段的值,便于开发调试
+  - apiCache : `@defaultValue true` 对 api 上方法的调用是否开启缓存，如果需要支持 OceanPress 请开启此选项
+  - maxCacheValueLength : `@defaultValue 10 * 1024` 缓存结果的最大长度，超出此长度则不会缓存且在控制台打印警告
 
 ## 注意事项
 
