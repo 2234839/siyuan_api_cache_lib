@@ -8,7 +8,8 @@ import { getCurrentEnv } from "../util/env";
  * 参数以及返回值需要可使用 JSON.stringify
  */
 function cache<F extends ((...arg: unknown[]) => void) & { noCache: boolean }>(
-  f: F
+  f: F,
+  funcName = f.name
 ): F {
   return (async (...arg: unknown[]) => {
     if (
@@ -19,7 +20,7 @@ function cache<F extends ((...arg: unknown[]) => void) & { noCache: boolean }>(
       const r = await f(...arg);
       const id = currentNodeId();
       if (id) {
-        const key = getCacheKey(f, arg);
+        const key = getCacheKey(funcName, arg);
         const value = JSON.stringify(r);
         if (value.length <= config.maxCacheValueLength) {
           setBlockAttrs({
@@ -38,7 +39,7 @@ function cache<F extends ((...arg: unknown[]) => void) & { noCache: boolean }>(
       return r;
     } else {
       if (getCurrentEnv() !== getCurrentEnv.env.siYuan) {
-        return cacheExtract(f, arg);
+        return cacheExtract(funcName, arg);
       } else {
         return f(...arg);
       }
@@ -53,7 +54,7 @@ export function cacheWarp<T extends Object>(p: T): T {
       const element = p[key];
       if (typeof element === "function") {
         //@ts-ignore 这里类型比较复杂，不想写
-        warp[key] = cache(element);
+        warp[key] = cache(element, key);
       } else {
         warp[key] = element;
       }
@@ -63,8 +64,8 @@ export function cacheWarp<T extends Object>(p: T): T {
 }
 
 /** 从缓存提取以前对此参数调用的结果 */
-function cacheExtract(f: Function, arg: unknown) {
-  const key = getCacheKey(f, arg);
+function cacheExtract(funcName: string, arg: unknown) {
+  const key = getCacheKey(funcName, arg);
   const env = getCurrentEnv();
   if (env === getCurrentEnv.env.siYuan) {
     // cache 函数内的代码应该保证不会走到这个分支
@@ -78,10 +79,11 @@ function cacheExtract(f: Function, arg: unknown) {
   }
 }
 
-function getCacheKey(f: Function, arg: unknown) {
+function getCacheKey(funcName: string, arg: unknown) {
+  // 存在 缺陷，当函数名称变化时，缓存的 key 也会变化
   /** 这里本来是 custom-call 改成 z 是为了在思源内的属性面板中排最后 对于用户来说应该不会很关心这里的数据 */
-  return `custom-z-${f.name.toLowerCase()}-${cyrb53(
-    `${f.name}__${JSON.stringify(arg)}`
+  return `custom-z-${funcName.toLowerCase()}-${cyrb53(
+    `${funcName}__${JSON.stringify(arg)}`
   )}`;
 }
 
