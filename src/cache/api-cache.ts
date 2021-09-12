@@ -73,14 +73,24 @@ function cacheExtract(funcName: string, arg: unknown) {
     // 未知环境不管它
   } else if (env === getCurrentEnv.env.oceanPress) {
     const code = self.frameElement!.parentElement!.getAttribute(key) || "";
-    return JSON.parse(code || "");
+    try {
+      return JSON.parse(code || "");
+    } catch (error) {
+      // 补丁，弥补之前直接使用函数名作为参数的糊涂行为
+      const key = getCacheKey(
+        { getBlockAttr: "ss" }[funcName] || funcName,
+        arg
+      );
+      const code = self.frameElement!.parentElement!.getAttribute(key) || "";
+      return JSON.parse(code || "");
+    }
   } else {
     const exhaustiveCheck: never = env;
   }
 }
 
 function getCacheKey(funcName: string, arg: unknown) {
-  // 存在 缺陷，当函数名称变化时，缓存的 key 也会变化
+  // 存在 缺陷，当函数名称变化时，缓存的 key 也会变化,所以还是需要主动传递一个 key -> funcName
   /** 这里本来是 custom-call 改成 z 是为了在思源内的属性面板中排最后 对于用户来说应该不会很关心这里的数据 */
   return `custom-z-${funcName.toLowerCase()}-${cyrb53(
     `${funcName}__${JSON.stringify(arg)}`
